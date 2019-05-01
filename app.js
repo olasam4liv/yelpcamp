@@ -1,12 +1,31 @@
 const express = require("express");
 let app =  express();
 let bodyParser = require("body-parser");
+let mongoose = require("mongoose");
 
+mongoose.connect("mongodb://localhost/yelpcamp-v2", {useNewUrlParser: true });
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public/image")); 
 app.set("view engine", "ejs")
  
+//SCHEMA SETUP
+let campgroundSchema = new mongoose.Schema({
+    name: String,
+    image: String
+});
+let Campground =  mongoose.model("Campground", campgroundSchema);
+
+Campground.create({    
+    name: " Sam", 
+    image: "samuel.jpg" 
+}, function(err, campground){
+    if(err){
+        console.log(err)
+    } else{
+        console.log("Newly Created Campground", campground)
+    }
+})
 
 let campgrounds =  [
     {name: " Sam", image: "samuel.jpg" },

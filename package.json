@@ -4,6 +4,7 @@
   "description": "yelpcamp",
   "main": "app.js",
   "scripts": {
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +20,9 @@
   "dependencies": {
     "ejs": "^2.6.1",
     "express": "^4.16.4",
-    "nodemon": "^1.18.11"
+    "mongoose": "^5.5.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.0"
   }
 }
