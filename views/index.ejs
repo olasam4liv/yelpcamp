@@ -1,5 +1,9 @@
-<h1>Welcome to home page</h1>
+<% include partials/header %>
 
+<heade class="jumbotron">
+<h1>Welcome to home page bbbb</h1>
+
+</header>
 
 <% campground.forEach(function(camp){ %>
     
@@ -11,4 +15,6 @@
 
 <% }) %>
 
-<p>  <a href="/">Back</a></p>
+<p class="btn-success">  <a class="btn-success" href="/">Back</a></p>
+
+<% include partials/footer %>
