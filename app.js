@@ -13,46 +13,60 @@ app.set("view engine", "ejs")
 let campgroundSchema = new mongoose.Schema({
     name: String,
     image: String
-});
-let Campground =  mongoose.model("Campground", campgroundSchema);
+});                            //collection name                
+let Campground =  mongoose.model("campground", campgroundSchema);
 
-Campground.create({    
-    name: " Sam", 
-    image: "samuel.jpg" 
-}, function(err, campground){
-    if(err){
-        console.log(err)
-    } else{
-        console.log("Newly Created Campground", campground)
-    }
-})
+// Campground.create({    
+//     name: " Sam", 
+//     image: "samuel.jpg" 
+// }, function(err, saveData){
+//     if(err){
+//         console.log(err)
+//     } else{
+//         console.log("Newly Created Campground", saveData)
+//     }
+// })
 
-let campgrounds =  [
-    {name: " Sam", image: "samuel.jpg" },
-    {name: " Adebimpe", image: "adebimpe.jpg" },
-    {name: " Samuel", image: "post.png" },
-    {name: " Sam", image: "post.png" },
-    {name: " Adebimpe", image: "post.png" },
-    {name: " Samuel", image: "post.png" }
-]
+// let campgrounds =  [
+//     {name: " Sam", image: "samuel.jpg" },
+//     {name: " Adebimpe", image: "adebimpe.jpg" },
+//     {name: " Samuel", image: "post.png" },
+//     {name: " Sam", image: "post.png" },
+//     {name: " Adebimpe", image: "post.png" },
+//     {name: " Samuel", image: "post.png" }
+// ]
  
 //ROUTE
 app.get("/", function(req, res){
  res.render("landing");
 });
 
+//View all data in db
 app.get("/campgrounds", function(req, res){
-    res.render("index", {campground: campgrounds});
+    Campground.find({}, function(err, allCampgrounds){
+        if(err){
+            console.log(err);
+        }else{
+            res.render("index", {campground: allCampgrounds});
+        }
+    });
+    //
    });
    
 app.post("/campgrounds", function(req, res){
     // get data from form
     let name = req.body.name;
     let image =  req.body.image;
-    let newCampgroungds = {name: name, image: image}
-    campgrounds.push(newCampgroungds);
-    res.redirect("/campgrounds");
-
+    let newCampgrounds = {name: name, image: image}
+    //Craete a new Campground and save to db
+    Campground.create(newCampgrounds, function(err, saveData){
+            if(err){
+                console.log(err)
+            } else{
+                //redirect to campgrounds 
+                res.redirect("/campgrounds");
+            }
+        }); 
 });
 
 app.get("/campgrounds/new", function(req, res){
