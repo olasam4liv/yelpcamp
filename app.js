@@ -3,8 +3,7 @@ let app =  express();
 let bodyParser = require("body-parser");
 let mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/yelpcamp-v2", {useNewUrlParser: true } );
- 
+mongoose.connect("mongodb://localhost:27017/yelpcamp-v2", {useNewUrlParser: true }); 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public/image")); 
 app.set("view engine", "ejs")
@@ -31,9 +30,8 @@ app.get("/campgrounds", function(req, res){
         }else{
             res.render("index", {campground: allCampgrounds});
         }
-    });
-    //
-   });
+    });    
+});
 //Save new campground to the db
 app.post("/campgrounds", function(req, res){
     // get data from form
@@ -71,7 +69,7 @@ app.get("/campgrounds/:id", function(req, res){
 
 app.get("*", function(req, res){
     res.send("Ooops Something Went Wrong!!!");
-   });
+});
 let PORT= process.env.PORT || 9000;
 app.listen(PORT, process.env.IP, function(){
     console.log(`Yelpcamp app is listening to Port ${PORT}`);
