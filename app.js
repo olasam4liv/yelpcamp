@@ -8,7 +8,7 @@ let Comment = require("./models/comment");
 let seedDb = require("./seeds");
 
 seedDb();
-mongoose.connect("mongodb://localhost:27017/yelpcamp-v3", {useNewUrlParser: true }); 
+mongoose.connect("mongodb://localhost:27017/yelpcamp-v4", {useNewUrlParser: true }); 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public/image")); 
 app.set("view engine", "ejs")
@@ -66,6 +66,11 @@ app.get("/campgrounds/:id", function(req, res){
 });
 
 
+
+//COMMENTS ROUTE
+app.get("campgrounds/:id/comments", function(req, res){
+    res.send("Welcome to future comment route");
+});
 app.get("*", function(req, res){
     res.send("Ooops Something Went Wrong!!!");
 });
