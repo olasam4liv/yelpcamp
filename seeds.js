@@ -1,6 +1,6 @@
 let mongoose =  require("mongoose");
 let Campground = require("./models/campground");
-var Comment =  require("./models/comment");
+let Comment =  require("./models/comment");
 
 
 let data = [

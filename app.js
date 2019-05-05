@@ -27,7 +27,7 @@ app.get("/campgrounds", function(req, res){
         if(err){
             console.log(err);
         }else{
-            res.render("index", {campground: allCampgrounds});
+            res.render("campgrounds/index", {campground: allCampgrounds});
         }
     });    
 });
@@ -50,7 +50,7 @@ app.post("/campgrounds", function(req, res){
 });
 //Display form to create new Campground
 app.get("/campgrounds/new", function(req, res){
-    res.render("new");
+    res.render("campgrounds/new");
 });
 
 app.get("/campgrounds/:id", function(req, res){
@@ -60,7 +60,7 @@ app.get("/campgrounds/:id", function(req, res){
             console.log(err)
         }else{
             //Display the found data from the db
-            res.render("show", {campground: getEachCampground});
+            res.render("campgrounds/show", {campground: getEachCampground});
         }
     });    
 });
@@ -68,9 +68,36 @@ app.get("/campgrounds/:id", function(req, res){
 
 
 //COMMENTS ROUTE
-app.get("campgrounds/:id/comments", function(req, res){
-    res.send("Welcome to future comment route");
+app.get("/campgrounds/:id/comments/new", function(req, res){
+    Campground.findById(req.params.id, function(err, getComment){
+        if(err){
+            console.log(err);
+        }else{
+        res.render("comments/new", {campground: getComment}); 
+    }   
+    });    
 });
+
+app.post("/campgrounds/:id/comments", function(req, res){
+    Campground.findById(req.params.id, function(err, getComment){
+        if(err){
+            console.log(err);
+            res.redirect("/campgrounds")
+        }else{
+            Comment.create(req.body.comment, function(err, comment){
+                if(err){
+                    console.log(err);
+                }else{
+                    getComment.comments.push(comment);
+                    getComment.save();
+                    res.redirect('/campgrounds/' + getComment._id); 
+                }
+            })
+        
+    }   
+    });    
+});
+
 app.get("*", function(req, res){
     res.send("Ooops Something Went Wrong!!!");
 });
