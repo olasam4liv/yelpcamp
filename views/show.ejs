@@ -4,12 +4,17 @@
  
 
        
-<h1>Welcome to  <%= campground.name %>'s campground</h1>
+<h1>Welcome to  <%= campground.name %> 's campground</h1>
 
 <%= campground.name %>
 
  <img src="../<%= campground.image %>">
  <p><%= campground.description %></p>
+ <% campground.comments.forEach(function(comment){ %>
+    <p>   <Strong><%= comment.commentAuthor %> </Strong> - <%= comment.commentText %>  
+    
+    </p> 
+ <%})%>
 <p class="btn btn-success">  <a class="btn-success" href="/campgrounds">Back</a></p>
 
 <% include partials/footer %>
