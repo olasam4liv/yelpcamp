@@ -113,9 +113,38 @@ app.post("/campgrounds/:id/comments", function(req, res){
 //    REGISTER ROUTE
 // ====================
 
+//Show register form
 app.get("/register", function(req, res){
-    res.send("Welcome to registration page")
-})
+    res.render("register");
+});
+//Handle Sign Up Logic
+app.post("/register", function(req, res){
+    let newUser= new User({username: req.body.username, email: req.body.email });     
+    User.register(newUser,  req.body.password, function(err, success){
+        if(err){
+            console.log(err);
+            return res.render("register");
+        }
+        passport.authenticate("local")(req, res, function(){
+            res.redirect("/campgrounds")
+        });         
+    });     
+});
+
+//Show Login form
+app.get("/login", function(req, res){
+    res.render("login");
+});
+
+//Handle Login Logic
+//app.post("/login", middleware, callback)
+app.post("/login", passport.authenticate("local",
+        {   successRedirect: "/campgrounds",
+            failureRedirect: "/login"    
+        }), function(req, res){
+
+});
+
 app.get("*", function(req, res){
     res.send("Ooops Something Went Wrong!!!");
 });
