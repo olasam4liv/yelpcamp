@@ -29,7 +29,7 @@ function seedDb(){
                     console.log(err);
                 }else{
                     console.log("Data created");
-                    console.log(camp);
+                    //console.log(camp);
                     Comment.create(
                         {
                         commentText: "This is comment",
@@ -41,7 +41,7 @@ function seedDb(){
                                 camp.comments.push(com);
                                 camp.save();
                                 console.log("Comment created");
-                                console.log(com)
+                                //console.log(com)
                             } 
                          });
                 }

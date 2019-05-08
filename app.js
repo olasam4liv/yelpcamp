@@ -4,16 +4,29 @@ let bodyParser = require("body-parser");
 let mongoose = require("mongoose");
 let Campground= require("./models/campground");
 let Comment = require("./models/comment");
-// let User = require("./models/user");
+let passport = require("passport");
+let LocalStrategy = require("passport-local");
+let User = require("./models/user");
 let seedDb = require("./seeds");
 
 seedDb();
-mongoose.connect("mongodb://localhost:27017/yelpcamp-v4", {useNewUrlParser: true }); 
+mongoose.connect("mongodb://localhost:27017/yelpcamp-v6", {useNewUrlParser: true }); 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs")
 app.use(express.static(__dirname + "/public")); 
 
 
+//PASSPORT CONFIGURATION
+app.use(require("express-session")({
+    secret: "Sam is good at what he does",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
  
 //ROUTE
 app.get("/", function(req, res){
@@ -96,7 +109,13 @@ app.post("/campgrounds/:id/comments", function(req, res){
     }   
     });    
 });
+// ====================
+//    REGISTER ROUTE
+// ====================
 
+app.get("/register", function(req, res){
+    res.send("Welcome to registration page")
+})
 app.get("*", function(req, res){
     res.send("Ooops Something Went Wrong!!!");
 });
