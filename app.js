@@ -28,12 +28,16 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
  
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+});
 //ROUTE
 app.get("/", function(req, res){
  res.render("landing");
 });
 
-//View all data in db
+//Show all campground
 app.get("/campgrounds", function(req, res){
     Campground.find({}, function(err, allCampgrounds){
         if(err){
@@ -49,7 +53,8 @@ app.post("/campgrounds", function(req, res){
     let name = req.body.name;
     let image =  req.body.image;
     let description = req.body.description;
-    let newCampgrounds = {name: name, image: image, description: description}
+    let date = new Date().toDateString;
+    let newCampgrounds = {name: name, image: image, description: description, date: date}
     //Craete a new Campground and save to db
     Campground.create(newCampgrounds, function(err, saveData){
             if(err){
@@ -80,7 +85,7 @@ app.get("/campgrounds/:id", function(req, res){
 
 
 //COMMENTS ROUTE
-app.get("/campgrounds/:id/comments/new", function(req, res){
+app.get("/campgrounds/:id/comments/new", isLoggedIn, function(req, res){
     Campground.findById(req.params.id, function(err, getComment){
         if(err){
             console.log(err);
@@ -90,7 +95,7 @@ app.get("/campgrounds/:id/comments/new", function(req, res){
     });    
 });
 
-app.post("/campgrounds/:id/comments", function(req, res){
+app.post("/campgrounds/:id/comments", isLoggedIn, function(req, res){
     Campground.findById(req.params.id, function(err, getComment){
         if(err){
             console.log(err);
@@ -145,6 +150,18 @@ app.post("/login", passport.authenticate("local",
 
 });
 
+//log out logic
+app.get("/logout", function(req, res){
+    req.logout();
+    res.redirect("/");
+})
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 app.get("*", function(req, res){
     res.send("Ooops Something Went Wrong!!!");
 });
