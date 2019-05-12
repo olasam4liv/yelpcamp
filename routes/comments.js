@@ -25,11 +25,15 @@ router.post("/", isLoggedIn, function(req, res){
                 if(err){
                     console.log(err);
                 }else{
+                    comment.Author.id = req.user._id;
+                    comment.Author.commentAuthor = req.user.username;
+                    comment.save();
                     getComment.comments.push(comment);
                     getComment.save();
+                    console.log(comment);
                     res.redirect('/campgrounds/' + getComment._id); 
                 }
-            })
+            });
     }   
     });    
 });

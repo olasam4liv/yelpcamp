@@ -21,32 +21,32 @@ function seedDb(){
         if(err){
             console.log(err);
         }else{
-            console.log("Data removed");
+            console.log("Data removed"); 
         }
-        data.forEach(function(seed){
-            Campground.create(seed, function(err, camp){
-                if(err){
-                    console.log(err);
-                }else{
-                    console.log("Data created");
-                    //console.log(camp);
-                    Comment.create(
-                        {
-                        commentText: "This is comment",
-                        commentAuthor: "This is the author"
-                         }, function(err, com){                            
-                            if(err){
-                                console.log(err);
-                            }else{
-                                camp.comments.push(com);
-                                camp.save();
-                                console.log("Comment created");
-                                //console.log(com)
-                            } 
-                         });
-                }
-            });
-        });
+        // data.forEach(function(seed){
+        //     Campground.create(seed, function(err, camp){
+        //         if(err){
+        //             console.log(err);
+        //         }else{
+        //             console.log("Data created");
+        //             //console.log(camp);
+        //             Comment.create(
+        //                 {
+        //                 commentText: "This is comment",
+        //                 commentAuthor: "This is the author"
+        //                  }, function(err, com){                            
+        //                     if(err){
+        //                         console.log(err);
+        //                     }else{
+        //                         camp.comments.push(com);
+        //                         camp.save();
+        //                         console.log("Comment created");
+        //                         //console.log(com)
+        //                     } 
+        //                  });
+        //         }
+        //     });
+        // });
     });
 }
 module.exports = seedDb;

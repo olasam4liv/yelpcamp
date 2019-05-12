@@ -6,6 +6,13 @@ let campgroundSchema = new mongoose.Schema({
     image: String,
     description: String,
     date: String,
+    user: {
+            id:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            },
+            username: String
+    },
     comments: [
         {
             type: mongoose.Schema.Types.ObjectId,

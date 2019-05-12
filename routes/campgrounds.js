@@ -13,26 +13,30 @@ router.get("/", function(req, res){
     });    
 });
 //Save new campground to the db
-router.post("/", function(req, res){
-    // get data from form
+router.post("/", isLoggedIn, function(req, res){
+    // get data from form and add to campground db
     let name = req.body.name;
     let image =  req.body.image;
     let description = req.body.description;
     let date = new Date().toDateString;
-    let newCampgrounds = {name: name, image: image, description: description, date: date}
+    let newCampgrounds = [{name: name, image: image, description: description, date: date}]
     //Craete a new Campground and save to db
     Campground.create(newCampgrounds, function(err, saveData){
             if(err){
                 console.log(err)
             } else{
                 //redirect to campgrounds 
+                console.log(req.user.username);
+                saveData.user.push(newCampgrounds);
+                saveData.save();
+                console.log(saveData);
                 res.redirect("/campgrounds");
             }
         }); 
 });
 
 //Display form to create new Campground
-router.get("/new", function(req, res){
+router.get("/new", isLoggedIn, function(req, res){
     res.render("campgrounds/new");
 });
 //Display  Campground by ID
@@ -47,5 +51,10 @@ router.get("/:id", function(req, res){
         }
     });    
 });
-
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 module.exports = router;
