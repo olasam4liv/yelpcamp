@@ -19,7 +19,8 @@
                 <img src="../image/<%= camp.image %>" >  
                 <div class="caption">
                 <h4> <%= camp.name %> </h4>
-                <p><a class="pull-left">Posted by:</a></p>
+                <p><a class="pull-left">Posted by: <%= camp.author.username %></a></p>
+                <p><a class="pull-right">Date: <%= camp.date %></a></p>
             </div>
             
             <p><a class="btn btn-primary" href="/campgrounds/<%= camp._id %>">More Info</a></p>

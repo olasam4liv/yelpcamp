@@ -21,6 +21,8 @@
                <h4 class="pull-right">N900/Night</h4>
                <h4><a><%= campground.name %> </a> </h4>
                <p><%= campground.description %></p> 
+               <p>  
+                  <em> Submitted By: <%= campground.author.username.toUpperCase() %> </em></p> 
             </div>  
          </div> 
             <div class="well">
@@ -31,7 +33,7 @@
                <% campground.comments.forEach(function(comment){ %>
                   <div class="row">
                      <div class="col-md-12">
-                            <strong><%= comment.commentAuthor %> </strong>
+                            
                             <span class="pull-right">10 days ago</span>
                             <span class="pull-right"><%= comment.date %></span>
                            <p>    <%= comment.commentText %> </p> 

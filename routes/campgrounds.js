@@ -18,17 +18,19 @@ router.post("/", isLoggedIn, function(req, res){
     let name = req.body.name;
     let image =  req.body.image;
     let description = req.body.description;
-    let date = new Date().toDateString;
-    let newCampgrounds = [{name: name, image: image, description: description, date: date}]
+    let date =  new Date().getHours(0).toString();  
+    let author = {
+        id: req.user._id,
+        username: req.user.username,
+        //date =  new Date("Y-m-d")
+    }
+    let newCampgrounds = [{name: name, image: image, description: description, author, date: date}]
     //Craete a new Campground and save to db
     Campground.create(newCampgrounds, function(err, saveData){
             if(err){
                 console.log(err)
             } else{
                 //redirect to campgrounds 
-                console.log(req.user.username);
-                saveData.user.push(newCampgrounds);
-                saveData.save();
                 console.log(saveData);
                 res.redirect("/campgrounds");
             }
