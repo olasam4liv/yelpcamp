@@ -19,7 +19,10 @@
                 <img src="../image/<%= camp.image %>" >  
                 <div class="caption">
                 <h4> <%= camp.name %> </h4>
-                <p><a class="pull-left">Posted by: <%= camp.author.username %></a></p>
+                <p class="pull-left">  
+                    <em> Posted By: <%= camp.author.username.toUpperCase() %> </em>
+                 </p>
+                
                 <p><a class="pull-right">Date: <%= camp.date %></a></p>
             </div>
             

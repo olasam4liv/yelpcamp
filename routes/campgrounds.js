@@ -1,7 +1,7 @@
 let express =  require("express");
 let router = express.Router();
 let Campground= require("../models/campground");
-
+//mongoose.set('useFindAndModify', false);
 //Show all campgrounds
 router.get("/", function(req, res){
     Campground.find({}, function(err, allCampgrounds){
@@ -18,7 +18,7 @@ router.post("/", isLoggedIn, function(req, res){
     let name = req.body.name;
     let image =  req.body.image;
     let description = req.body.description;
-    let date =  new Date().getHours(0).toString();  
+    let date =  new Date().toString();  
     let author = {
         id: req.user._id,
         username: req.user.username,
@@ -53,7 +53,81 @@ router.get("/:id", function(req, res){
         }
     });    
 });
-function isLoggedIn(req, res, next){
+
+//Edit Campground
+router.get("/:id/edit", function(req, res){
+    //is user logged in?
+    if(req.isAuthenticated()){
+        Campground.findById(req.params.id, function(err, foundCampround){
+                if(err){
+                    res.redirect("/campgrounds");
+                }else{
+                    //does user own the campground?
+                    // console.log(foundCampround.author.id);
+                    // console.log(req.user._id);
+                    if(foundCampround.author.id.equals(req.user._id)){
+                        res.render("campgrounds/edit", {campground: foundCampround});
+                    }
+                    else{
+                        res.send("This campground does not belongs to you")
+                    }
+                }         
+            });  
+    } else{
+        res.send("You Need to Login");
+    }
+    
+});
+
+//Update Campground
+
+router.put("/:id", function(req, res){
+    Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedCampground){
+        if(err){
+            res.redirect("/campgrounds");
+        }else{
+           // updatedCampground.save();
+            res.redirect("/campgrounds/" + req.params.id );
+        }
+    })    
+});
+
+//Destroy Campground
+router.delete("/:id", function(req, res){
+
+    Campground.findByIdAndRemove(req.params.id, function(err, success){
+        if(err){
+            console.log(err);
+            res.redirect("/campgrounds" + req,params.id);
+        } else{
+            console.log("successfully Removed");
+            res.redirect("/campgrounds");
+        }
+    });    
+});
+
+function checkCampgroundOwnership(req, res, next){
+    if(req.isAuthenticated()){
+        Campground.findById(req.params.id, function(err, foundCampround){
+                if(err){
+                    res.redirect("/campgrounds");
+                }else{
+                    //does user own the campground?
+                    // console.log(foundCampround.author.id);
+                    // console.log(req.user._id);
+                    if(foundCampround.author.id.equals(req.user._id)){
+                        res.render("campgrounds/edit", {campground: foundCampround});
+                    }
+                    else{
+                        res.send("This campground does not belongs to you")
+                    }
+                }         
+            });  
+    } else{
+        res.redirect("You Need to Login");
+    }
+}
+function isLoggedIn(req, res, next){ 
     if(req.isAuthenticated()){
         return next();
     }

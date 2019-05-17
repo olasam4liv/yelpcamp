@@ -1,6 +1,5 @@
 <% include ../partials/header %>
 
-
  <div class="container">
     <div class="row">
       <div class="col-md-3">
@@ -18,11 +17,19 @@
          <div class="thumbnail">
             <img class="image-responsive" src="../image/<%= campground.image %>">
             <div class="caption-full">
+                
                <h4 class="pull-right">N900/Night</h4>
                <h4><a><%= campground.name %> </a> </h4>
                <p><%= campground.description %></p> 
                <p>  
-                  <em> Submitted By: <%= campground.author.username.toUpperCase() %> </em></p> 
+                  <em> Submitted By: <%= campground.author.username.toUpperCase() %> </em>
+               </p>
+               
+                  <a class="btn btn-xs btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+                  <form id="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+                     <button class="btn btn-xs btn-danger">Delete</button>
+                  </form>
+                
             </div>  
          </div> 
             <div class="well">
@@ -32,8 +39,7 @@
                <hr>
                <% campground.comments.forEach(function(comment){ %>
                   <div class="row">
-                     <div class="col-md-12">
-                            
+                     <div class="col-md-12">                            
                             <span class="pull-right">10 days ago</span>
                             <span class="pull-right"><%= comment.date %></span>
                            <p>    <%= comment.commentText %> </p> 

@@ -9,16 +9,20 @@ let LocalStrategy = require("passport-local");
 let User = require("./models/user");
 let seedDb = require("./seeds");
 let commentRoutes = require("./routes/comments");
+
 let campgroundRoutes = require("./routes/campgrounds");
 let indexRoutes = require("./routes/index");
+let methodOverride = require("method-override");
 
 
 
 //seedDb(); //seed the database
-mongoose.connect("mongodb://localhost:27017/yelpcamp-v9", {useNewUrlParser: true }); 
+mongoose.connect("mongodb://localhost:27017/yelpcamp-v10", {useNewUrlParser: true }); 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs")
 app.use(express.static(__dirname + "/public")); 
+app.use(methodOverride("_method"))
+mongoose.set('useFindAndModify', false);
 
 //PASSPORT CONFIGURATION
 app.use(require("express-session")({
@@ -27,6 +31,7 @@ app.use(require("express-session")({
     saveUninitialized: false
 }));
 app.use(passport.initialize());
+
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
