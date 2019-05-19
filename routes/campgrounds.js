@@ -55,33 +55,15 @@ router.get("/:id", function(req, res){
 });
 
 //Edit Campground
-router.get("/:id/edit", function(req, res){
-    //is user logged in?
-    if(req.isAuthenticated()){
-        Campground.findById(req.params.id, function(err, foundCampround){
-                if(err){
-                    res.redirect("/campgrounds");
-                }else{
-                    //does user own the campground?
-                    // console.log(foundCampround.author.id);
-                    // console.log(req.user._id);
-                    if(foundCampround.author.id.equals(req.user._id)){
-                        res.render("campgrounds/edit", {campground: foundCampround});
-                    }
-                    else{
-                        res.send("This campground does not belongs to you")
-                    }
-                }         
-            });  
-    } else{
-        res.send("You Need to Login");
-    }
-    
+router.get("/:id/edit", checkCampgroundOwnership, function(req, res){
+        Campground.findById(req.params.id, function(err, foundCampround){                 
+            res.render("campgrounds/edit", {campground: foundCampround});                    
+        });  
 });
 
 //Update Campground
 
-router.put("/:id", function(req, res){
+router.put("/:id", checkCampgroundOwnership, function(req, res){
     Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedCampground){
         if(err){
             res.redirect("/campgrounds");
@@ -93,8 +75,7 @@ router.put("/:id", function(req, res){
 });
 
 //Destroy Campground
-router.delete("/:id", function(req, res){
-
+router.delete("/:id", checkCampgroundOwnership, function(req, res){
     Campground.findByIdAndRemove(req.params.id, function(err, success){
         if(err){
             console.log(err);
@@ -110,21 +91,19 @@ function checkCampgroundOwnership(req, res, next){
     if(req.isAuthenticated()){
         Campground.findById(req.params.id, function(err, foundCampround){
                 if(err){
-                    res.redirect("/campgrounds");
+                    res.redirect("back");
                 }else{
                     //does user own the campground?
-                    // console.log(foundCampround.author.id);
-                    // console.log(req.user._id);
                     if(foundCampround.author.id.equals(req.user._id)){
-                        res.render("campgrounds/edit", {campground: foundCampround});
+                        next();                       
                     }
                     else{
-                        res.send("This campground does not belongs to you")
+                        res.redirect("back");
                     }
                 }         
             });  
     } else{
-        res.redirect("You Need to Login");
+        res.redirect("back");
     }
 }
 function isLoggedIn(req, res, next){ 
