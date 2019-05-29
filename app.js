@@ -2,20 +2,14 @@ const express = require("express");
 let app =  express();
 let bodyParser = require("body-parser");
 let mongoose = require("mongoose");
-// let Campground= require("./models/campground");
-// let Comment = require("./models/comment");
 let passport = require("passport");
 let LocalStrategy = require("passport-local");
 let User = require("./models/user");
-let seedDb = require("./seeds");
 let commentRoutes = require("./routes/comments");
 let campgroundRoutes = require("./routes/campgrounds");
 let indexRoutes = require("./routes/index");
 let methodOverride = require("method-override");
 
-
-
-//seedDb(); //seed the database
 mongoose.connect("mongodb://localhost:27017/yelpcamp-v10", {useNewUrlParser: true }); 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs")
