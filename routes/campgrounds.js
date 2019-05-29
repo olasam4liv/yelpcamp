@@ -79,7 +79,7 @@ router.delete("/:id", checkCampgroundOwnership, function(req, res){
     Campground.findByIdAndRemove(req.params.id, function(err, success){
         if(err){
             console.log(err);
-            res.redirect("/campgrounds" + req,params.id);
+            res.redirect("/campgrounds" + req.params.id);
         } else{
             console.log("successfully Removed");
             res.redirect("/campgrounds");

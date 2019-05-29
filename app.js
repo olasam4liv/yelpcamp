@@ -9,7 +9,6 @@ let LocalStrategy = require("passport-local");
 let User = require("./models/user");
 let seedDb = require("./seeds");
 let commentRoutes = require("./routes/comments");
-
 let campgroundRoutes = require("./routes/campgrounds");
 let indexRoutes = require("./routes/index");
 let methodOverride = require("method-override");
