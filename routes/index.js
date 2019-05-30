@@ -21,11 +21,13 @@ router.get("/", function(req, res){
        let newUser= new User({username: req.body.username, email: req.body.email });     
        User.register(newUser,  req.body.password, function(err, success){
            if(err){
-               console.log(err);
-               return res.render("register");
+               req.flash("error", err.message);
+               console.log(err);             
+               return res.redirect("register");
            }
            passport.authenticate("local")(req, res, function(){
-               res.redirect("/campgrounds")
+               req.flash("success", "Welcome to campground " + req.body.username);
+               res.redirect("/campgrounds");
            });         
        });     
    });
@@ -46,6 +48,7 @@ router.get("/", function(req, res){
    //Log out logic
    router.get("/logout", function(req, res){
        req.logout();
+       req.flash("success", "LogOut Successfuly")
        res.redirect("/");
    })
    

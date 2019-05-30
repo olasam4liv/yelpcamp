@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/stylesheets/main.css">
    
 </head>
-<nav class="navbar navbar-default ">
+<nav class="navbar navbar-default ">   
         <div class="cointainer-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">YelpCamp</a>
@@ -29,4 +29,17 @@
             </div>    
         </div>
     </nav>
+    <div class="container"  >
+        <% if(error && error.length > 0){ %>
+            <div class="alert alert-danger" role="alert">
+                <%= error %> 
+            </div>
+        <% } %>
+        <% if(success && success.length > 0){ %>       
+        <div class="alert alert-success" role="alert">
+            <%= success %> 
+        </div>
+        <% } %>
+    </div>
+     
 <body>
